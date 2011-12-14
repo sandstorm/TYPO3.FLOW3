@@ -355,6 +355,9 @@ class ProxyClassBuilder {
 				$pointcutFilterComposite = $this->pointcutExpressionParser->parse($introduceAnnotation->pointcutExpression, $this->renderSourceHint($aspectClassName, $propertyName, 'TYPO3\FLOW3\Annotations\Introduce'));
 				$pointcut = new \TYPO3\FLOW3\AOP\Pointcut\Pointcut($introduceAnnotation->pointcutExpression, $pointcutFilterComposite, $aspectClassName);
 				$introduction = new \TYPO3\FLOW3\AOP\PropertyIntroduction($aspectClassName, $propertyName, $pointcut);
+				if ($introduceAnnotation->generateGetterAndSetter === TRUE) {
+					$introduction->generateGetterAndSetter();
+				}
 				$aspectContainer->addPropertyIntroduction($introduction);
 			}
 		}
@@ -393,6 +396,14 @@ class ProxyClassBuilder {
 
 		foreach ($propertyIntroductions as $propertyIntroduction) {
 			$proxyClass->addProperty($propertyIntroduction->getPropertyName(), 'NULL', $propertyIntroduction->getPropertyVisibility(), $propertyIntroduction->getPropertyDocComment());
+			if ($propertyIntroduction->shouldGenerateGetterAndSetter()) {
+				$getterMethod = $proxyClass->getMethod('get' . ucfirst($propertyIntroduction->getPropertyName()));
+				$getterMethod->addPreParentCallCode(sprintf("\t\t" . 'return $this->%s;' . "\n", $propertyIntroduction->getPropertyName()));
+
+				$setterMethod = $proxyClass->getMethod('set' . ucfirst($propertyIntroduction->getPropertyName()));
+				$setterMethod->setMethodParametersCode('$' . $propertyIntroduction->getPropertyName());
+				$setterMethod->addPreParentCallCode(sprintf("\t\t" . '$this->%1$s = $%1$s;' . "\n", $propertyIntroduction->getPropertyName()));
+			}
 		}
 
 		$proxyClass->getMethod('FLOW3_AOP_Proxy_buildMethodsAndAdvicesArray')->addPreParentCallCode("\t\tif (method_exists(get_parent_class(\$this), 'FLOW3_AOP_Proxy_buildMethodsAndAdvicesArray') && is_callable('parent::FLOW3_AOP_Proxy_buildMethodsAndAdvicesArray')) parent::FLOW3_AOP_Proxy_buildMethodsAndAdvicesArray();\n");

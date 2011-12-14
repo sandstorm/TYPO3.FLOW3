@@ -187,6 +187,22 @@ class FrameworkTest extends \TYPO3\FLOW3\Tests\FunctionalTestCase {
 	}
 
 	/**
+	 * protected properties with getters and setters can be introduced
+	 *
+	 * @test
+	 */
+	public function propertiesWithGettersAndSettersCanBeIntroduced() {
+		$targetClass = new Fixtures\TargetClass03();
+
+		$this->assertTrue(property_exists(get_class($targetClass), 'introducedProtectedPropertyWithGetter'), 'property does not exist');
+		$this->assertTrue(method_exists($targetClass, 'getIntroducedProtectedPropertyWithGetter'), 'getter does not exist');
+		$this->assertTrue(method_exists($targetClass, 'setIntroducedProtectedPropertyWithGetter'), 'setter does not exist');
+
+		$targetClass->setIntroducedProtectedPropertyWithGetter('My Property Value');
+		$this->assertSame('My Property Value', $targetClass->getIntroducedProtectedPropertyWithGetter(), 'getter/setter does not work');
+	}
+
+	/**
 	 * @test
 	 */
 	public function methodArgumentsCanBeSetInTheJoinpoint() {

@@ -28,6 +28,12 @@ class BaseFunctionalityTestingAspect {
 	protected $introducedProtectedProperty;
 
 	/**
+	 * @FLOW3\Introduce("class(TYPO3\FLOW3\Tests\Functional\AOP\Fixtures\TargetClass03)", generateGetterAndSetter=1)
+	 * @var string
+	 */
+	protected $introducedProtectedPropertyWithGetter;
+
+	/**
 	 * @FLOW3\Introduce("class(TYPO3\FLOW3\Tests\Functional\AOP\Fixtures\TargetClass03)")
 	 * @var array
 	 */

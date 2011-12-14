@@ -30,6 +30,11 @@ final class Introduce {
 	public $interfaceName;
 
 	/**
+	 * @var boolean
+	 */
+	public $generateGetterAndSetter = FALSE;
+
+	/**
 	 * @param array $values
 	 */
 	public function __construct(array $values) {
@@ -40,6 +45,10 @@ final class Introduce {
 
 		if (isset($values['interfaceName'])) {
 			$this->interfaceName = $values['interfaceName'];
+		}
+
+		if (isset($values['generateGetterAndSetter'])) {
+			$this->generateGetterAndSetter = TRUE; // TODO adjust
 		}
 	}
 

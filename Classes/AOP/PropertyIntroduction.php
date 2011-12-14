@@ -49,6 +49,11 @@ class PropertyIntroduction {
 	protected $pointcut;
 
 	/**
+	 * @var boolean
+	 */
+	protected $generateGetterAndSetter = FALSE;
+
+	/**
 	 * Constructor
 	 *
 	 * @param string $declaringAspectClassName Name of the aspect containing the declaration for this introduction
@@ -69,6 +74,14 @@ class PropertyIntroduction {
 			$this->propertyVisibility = 'public';
 		}
 		$this->propertyDocComment = preg_replace('/@(TYPO3\\\\FLOW3\\\\Annotations|FLOW3)\\\\Introduce.+$/mi', 'introduced by ' . $declaringAspectClassName, $propertyReflection->getDocComment());
+	}
+
+	public function generateGetterAndSetter() {
+		$this->generateGetterAndSetter = TRUE;
+	}
+
+	public function shouldGenerateGetterAndSetter() {
+		return $this->generateGetterAndSetter;
 	}
 
 	/**

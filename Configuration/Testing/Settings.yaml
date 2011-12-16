@@ -58,3 +58,6 @@ TYPO3:
         dependencyInjection:
           singletonConstructorArgument: 'setting injected singleton value'
           prototypeConstructorArgument: 'setting injected property value'
+    utility:
+      environment:
+        className: \TYPO3\FLOW3\Utility\TestingEnvironment

@@ -302,3 +302,6 @@ TYPO3:
         # If this setting is null, the base URI will be detected from the current
         # request (default).
         baseUri: null
+
+        # Environment
+        className: \TYPO3\FLOW3\Utility\Environment

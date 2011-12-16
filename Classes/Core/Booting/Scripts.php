@@ -88,7 +88,12 @@ class Scripts {
 
 		$settings = $configurationManager->getConfiguration(\TYPO3\FLOW3\Configuration\ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'TYPO3.FLOW3');
 
-		$environment = new \TYPO3\FLOW3\Utility\Environment($context);
+		if (isset($settings['utility']['environment']['className'])) {
+			$environmentClass = $settings['utility']['environment']['className'];
+		} else {
+			$environmentClass = '\TYPO3\FLOW3\Utility\Environment';
+		}
+		$environment = new $environmentClass($context);
 		$environment->setTemporaryDirectoryBase($settings['utility']['environment']['temporaryDirectoryBase']);
 
 		if (isset($settings['utility']['environment']['baseUri']) && $settings['utility']['environment']['baseUri'] !== NULL) {
